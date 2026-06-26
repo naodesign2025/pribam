@@ -1,0 +1,203 @@
+<%- include('partials/header', { title: 'プロフィール編集' }) %>
+
+<div class="site-header">
+  <a href="/" class="logo-link"><h1 class="logo-text">プリバム</h1></a>
+  <div class="header-actions">
+    <a href="/profile/view/<%= profile.user_id %>" class="btn-view">見る</a>
+    <a href="/auth/logout" class="btn-logout">ログアウト</a>
+  </div>
+</div>
+
+<div class="profile-form-container">
+  <div class="prof-book">
+    <div class="prof-book-title">
+      <span class="rainbow-text">EDIT PROFILE</span>
+      <br>
+      <span class="subtitle-text">- プロフィール編集 -</span>
+    </div>
+
+    <% if (error) { %>
+      <div class="error-box"><%= error %></div>
+    <% } %>
+
+    <form action="/profile/edit" method="POST" enctype="multipart/form-data" id="profileForm">
+      <input type="hidden" name="existing_icon" value="<%= profile.icon_url || '' %>">
+
+      <!-- アイコン写真 -->
+      <div class="prof-section section-pink">
+        <div class="section-header">
+          <span class="section-icon">★</span>
+          アイコン写真
+          <span class="section-icon">★</span>
+        </div>
+        <div class="icon-upload-area">
+          <div class="icon-preview-wrapper" onclick="document.getElementById('iconInput').click()">
+            <img id="iconPreview"
+              src="<%= profile.icon_url || '' %>"
+              alt="アイコン"
+              class="icon-preview"
+              onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI2MCIgY3k9IjYwIiByPSI2MCIgZmlsbD0iI2ZmZDBmNSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjQ4IiBmaWxsPSIjZmY2OWI0Ij7wn5OKPC90ZXh0Pjwvc3ZnPg=='">
+            <div class="icon-upload-overlay">
+              <span>タップして変更</span>
+            </div>
+          </div>
+          <input type="file" id="iconInput" name="icon" accept="image/*" class="hidden-input">
+          <p class="upload-hint">JPG/PNG/GIF/WebP・5MBまで</p>
+        </div>
+      </div>
+
+      <!-- 基本情報 -->
+      <div class="prof-section section-cyan">
+        <div class="section-header">
+          <span class="section-icon">♡</span>
+          基本情報
+          <span class="section-icon">♡</span>
+        </div>
+        <div class="form-group">
+          <label>ニックネーム <span class="required">必須</span></label>
+          <input type="text" name="nickname" required value="<%= profile.nickname || '' %>" placeholder="あなたのニックネーム" maxlength="30">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>誕生日</label>
+            <input type="date" name="birthday" value="<%= profile.birthday ? profile.birthday.toISOString ? profile.birthday.toISOString().split('T')[0] : String(profile.birthday).split('T')[0] : '' %>">
+          </div>
+          <div class="form-group">
+            <label>血液型</label>
+            <select name="blood_type">
+              <option value="">選択してね</option>
+              <% ['A','B','O','AB','不明'].forEach(bt => { %>
+                <option value="<%= bt %>" <%= profile.blood_type === bt ? 'selected' : '' %>><%= bt %>型</option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 好きなもの -->
+      <div class="prof-section section-yellow">
+        <div class="section-header">
+          <span class="section-icon">☆</span>
+          好きなもの
+          <span class="section-icon">☆</span>
+        </div>
+        <div class="form-group">
+          <label>好きな食べ物</label>
+          <input type="text" name="favorite_food" value="<%= profile.favorite_food || '' %>" placeholder="例：ラーメン、チョコレート..." maxlength="100">
+        </div>
+        <div class="form-group">
+          <label>好きなタイプ</label>
+          <input type="text" name="favorite_type" value="<%= profile.favorite_type || '' %>" placeholder="例：優しくて面白い人！" maxlength="100">
+        </div>
+      </div>
+
+      <!-- たからもの -->
+      <div class="prof-section section-green">
+        <div class="section-header">
+          <span class="section-icon">★</span>
+          たからもの・ほしいもの
+          <span class="section-icon">★</span>
+        </div>
+        <div class="form-group">
+          <label>たからもの</label>
+          <input type="text" name="treasure" value="<%= profile.treasure || '' %>" placeholder="例：おじいちゃんにもらった時計" maxlength="150">
+        </div>
+        <div class="form-group">
+          <label>今ほしいもの</label>
+          <input type="text" name="want_now" value="<%= profile.want_now || '' %>" placeholder="例：新しいスニーカー！" maxlength="150">
+        </div>
+      </div>
+
+      <!-- マイBEST3 -->
+      <div class="prof-section section-purple">
+        <div class="section-header">
+          <span class="section-icon">♡</span>
+          マイ BEST 3
+          <span class="section-icon">♡</span>
+        </div>
+        <div class="best3-wrapper">
+          <div class="best3-item">
+            <span class="best3-rank rank-1">1st</span>
+            <input type="text" name="best3_1" value="<%= profile.best3[0] || '' %>" placeholder="第1位！" maxlength="50">
+          </div>
+          <div class="best3-item">
+            <span class="best3-rank rank-2">2nd</span>
+            <input type="text" name="best3_2" value="<%= profile.best3[1] || '' %>" placeholder="第2位！" maxlength="50">
+          </div>
+          <div class="best3-item">
+            <span class="best3-rank rank-3">3rd</span>
+            <input type="text" name="best3_3" value="<%= profile.best3[2] || '' %>" placeholder="第3位！" maxlength="50">
+          </div>
+        </div>
+      </div>
+
+      <!-- もしもコーナー -->
+      <div class="prof-section section-orange">
+        <div class="section-header">
+          <span class="section-icon">☆</span>
+          もしもコーナー
+          <span class="section-icon">☆</span>
+        </div>
+        <div class="form-group">
+          <label>もし○○だったら…？</label>
+          <input type="text" name="moshimo_q" value="<%= profile.moshimo[0] ? profile.moshimo[0].question : '' %>" placeholder="例：もし魔法が使えたら" maxlength="80">
+        </div>
+        <div class="form-group">
+          <label>答え</label>
+          <input type="text" name="moshimo_a" value="<%= profile.moshimo[0] ? profile.moshimo[0].answer : '' %>" placeholder="例：時間を止めたい！" maxlength="150">
+        </div>
+      </div>
+
+      <!-- FREE SPACE -->
+      <div class="prof-section section-pink">
+        <div class="section-header">
+          <span class="section-icon">★</span>
+          FREE SPACE
+          <span class="section-icon">★</span>
+        </div>
+        <div class="form-group">
+          <textarea name="free_space" rows="4" placeholder="なんでも自由に書いてね！" maxlength="500"><%= profile.free_space || '' %></textarea>
+          <span class="char-count" data-target="free_space" data-max="500"><%= (profile.free_space || '').length %> / 500</span>
+        </div>
+      </div>
+
+      <!-- LOVE LOVEコーナー -->
+      <div class="prof-section section-red">
+        <div class="section-header">
+          <span class="section-icon">♡</span>
+          LOVE LOVE コーナー
+          <span class="section-icon">♡</span>
+        </div>
+        <div class="form-group">
+          <label>ステータス</label>
+          <div class="love-options">
+            <% [
+              { val: '彼氏いる', cls: 'badge-blue' },
+              { val: '彼女いる', cls: 'badge-pink' },
+              { val: 'いない',   cls: 'badge-gray' },
+              { val: 'ひみつ',   cls: 'badge-purple' }
+            ].forEach(opt => { %>
+              <label class="love-radio">
+                <input type="radio" name="love_status" value="<%= opt.val %>" <%= profile.love_status === opt.val ? 'checked' : '' %>>
+                <span class="love-badge <%= opt.cls %>"><%= opt.val %></span>
+              </label>
+            <% }) %>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>ひとこと</label>
+          <input type="text" name="love_comment" value="<%= profile.love_comment || '' %>" placeholder="例：もうすぐ記念日！" maxlength="100">
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-large">
+          プロフを更新する！
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,177 @@
+<%- include('partials/header', { title: profile.nickname + 'のプロフ' }) %>
+
+<div class="site-header">
+  <a href="/" class="logo-link"><h1 class="logo-text">プリバム</h1></a>
+  <div class="header-actions">
+    <% if (isOwner) { %>
+      <a href="/profile/edit" class="btn-edit">編集する</a>
+      <a href="/auth/logout" class="btn-logout">ログアウト</a>
+    <% } else { %>
+      <a href="/auth/login" class="btn-logout">ログイン</a>
+    <% } %>
+  </div>
+</div>
+
+<div class="profile-view-container">
+  <div class="prof-card">
+
+    <!-- ヘッダー -->
+    <div class="prof-card-header">
+      <div class="deco-strip"></div>
+      <h2 class="rainbow-text">MY PROFILE</h2>
+      <p class="subtitle-text">— プリバム プロフィール帳 —</p>
+      <div class="deco-strip"></div>
+    </div>
+
+    <!-- アイコン & ニックネーム -->
+    <div class="view-identity">
+      <div class="view-icon-wrapper">
+        <% if (profile.icon_url) { %>
+          <img src="<%= profile.icon_url %>" alt="アイコン" class="view-icon">
+        <% } else { %>
+          <div class="view-icon-placeholder">
+            <span class="icon-emoji">🌟</span>
+          </div>
+        <% } %>
+      </div>
+      <div class="view-name-block">
+        <div class="view-nickname"><%= profile.nickname %></div>
+        <% if (profile.birthday) { %>
+          <div class="view-birthday">
+            <span class="label-tag">誕生日</span>
+            <%= new Date(profile.birthday).toLocaleDateString('ja-JP', { month: 'long', day: 'numeric' }) %>
+          </div>
+        <% } %>
+        <% if (profile.blood_type) { %>
+          <div class="view-blood">
+            <span class="blood-badge"><%= profile.blood_type %>型</span>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- 好きなもの -->
+    <% if (profile.favorite_food || profile.favorite_type) { %>
+    <div class="view-section vs-yellow">
+      <div class="vs-title">
+        <span>☆</span> 好きなもの <span>☆</span>
+      </div>
+      <% if (profile.favorite_food) { %>
+        <div class="view-item">
+          <span class="item-label">好きな食べ物</span>
+          <span class="item-value"><%= profile.favorite_food %></span>
+        </div>
+      <% } %>
+      <% if (profile.favorite_type) { %>
+        <div class="view-item">
+          <span class="item-label">好きなタイプ</span>
+          <span class="item-value"><%= profile.favorite_type %></span>
+        </div>
+      <% } %>
+    </div>
+    <% } %>
+
+    <!-- たからもの -->
+    <% if (profile.treasure || profile.want_now) { %>
+    <div class="view-section vs-green">
+      <div class="vs-title">
+        <span>★</span> たからもの & ほしいもの <span>★</span>
+      </div>
+      <% if (profile.treasure) { %>
+        <div class="view-item">
+          <span class="item-label">たからもの</span>
+          <span class="item-value"><%= profile.treasure %></span>
+        </div>
+      <% } %>
+      <% if (profile.want_now) { %>
+        <div class="view-item">
+          <span class="item-label">今ほしいもの</span>
+          <span class="item-value"><%= profile.want_now %></span>
+        </div>
+      <% } %>
+    </div>
+    <% } %>
+
+    <!-- マイBEST3 -->
+    <% const hasB3 = profile.best3 && profile.best3.some(b => b && b.trim()); %>
+    <% if (hasB3) { %>
+    <div class="view-section vs-purple">
+      <div class="vs-title">
+        <span>♡</span> マイ BEST 3 <span>♡</span>
+      </div>
+      <div class="best3-view">
+        <% profile.best3.forEach((item, i) => { %>
+          <% if (item && item.trim()) { %>
+          <div class="best3-view-item">
+            <span class="b3-rank rank-<%= i+1 %>"><%= i+1 === 1 ? '1st' : i+1 === 2 ? '2nd' : '3rd' %></span>
+            <span class="b3-text"><%= item %></span>
+          </div>
+          <% } %>
+        <% }) %>
+      </div>
+    </div>
+    <% } %>
+
+    <!-- もしもコーナー -->
+    <% const moshimo = profile.moshimo && profile.moshimo[0]; %>
+    <% if (moshimo && (moshimo.question || moshimo.answer)) { %>
+    <div class="view-section vs-orange">
+      <div class="vs-title">
+        <span>☆</span> もしもコーナー <span>☆</span>
+      </div>
+      <div class="moshimo-card">
+        <% if (moshimo.question) { %>
+          <div class="moshimo-q"><%= moshimo.question %></div>
+        <% } %>
+        <% if (moshimo.answer) { %>
+          <div class="moshimo-arrow">↓</div>
+          <div class="moshimo-a"><%= moshimo.answer %></div>
+        <% } %>
+      </div>
+    </div>
+    <% } %>
+
+    <!-- FREE SPACE -->
+    <% if (profile.free_space) { %>
+    <div class="view-section vs-pink">
+      <div class="vs-title">
+        <span>★</span> FREE SPACE <span>★</span>
+      </div>
+      <div class="free-space-content"><%= profile.free_space %></div>
+    </div>
+    <% } %>
+
+    <!-- LOVE LOVEコーナー -->
+    <% if (profile.love_status || profile.love_comment) { %>
+    <div class="view-section vs-red">
+      <div class="vs-title">
+        <span>♡</span> LOVE LOVE コーナー <span>♡</span>
+      </div>
+      <div class="love-view">
+        <% if (profile.love_status) { %>
+          <div class="love-status-display">
+            <span class="love-heart">♡</span>
+            <span class="love-status-text"><%= profile.love_status %></span>
+            <span class="love-heart">♡</span>
+          </div>
+        <% } %>
+        <% if (profile.love_comment) { %>
+          <div class="love-comment-display"><%= profile.love_comment %></div>
+        <% } %>
+      </div>
+    </div>
+    <% } %>
+
+    <!-- フッター装飾 -->
+    <div class="prof-card-footer">
+      <div class="deco-strip"></div>
+      <p class="footer-msg">★ また見てね！また遊んでね！★</p>
+      <% if (isOwner) { %>
+        <a href="/profile/edit" class="btn btn-primary">プロフを編集する</a>
+      <% } %>
+    </div>
+
+  </div>
+</div>
+
+<%- include('partials/footer') %>

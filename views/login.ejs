@@ -1,0 +1,42 @@
+<%- include('partials/header', { title: 'ログイン' }) %>
+
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <h1 class="logo-text">プリバム</h1>
+      <p class="logo-sub">★ 昭和のプロフ帳、デジタルで復活！ ★</p>
+    </div>
+
+    <% if (error) { %>
+      <div class="error-box"><%= error %></div>
+    <% } %>
+
+    <form action="/auth/login" method="POST" class="auth-form">
+      <div class="form-group">
+        <label for="email">メールアドレス</label>
+        <input type="email" id="email" name="email" required placeholder="example@mail.com">
+      </div>
+      <div class="form-group">
+        <label for="password">パスワード</label>
+        <input type="password" id="password" name="password" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">
+        ログインする！
+      </button>
+    </form>
+
+    <div class="auth-switch">
+      まだアカウントがない人は
+      <a href="/auth/register" class="link-fancy">新規登録はこちら！</a>
+    </div>
+  </div>
+
+  <div class="deco-stars" aria-hidden="true">
+    <span class="star s1">★</span>
+    <span class="star s2">☆</span>
+    <span class="star s3">★</span>
+    <span class="star s4">☆</span>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
