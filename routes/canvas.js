@@ -19,10 +19,13 @@ router.get('/data', requireAuth, async (req, res) => {
          cp.x,
          cp.y
        FROM profiles p
+       INNER JOIN exchanges e
+         ON (e.user_a = $1 AND e.user_b = p.user_id)
+         OR (e.user_b = $1 AND e.user_a = p.user_id)
        LEFT JOIN canvas_positions cp
          ON cp.owner_id = $1 AND cp.target_id = p.user_id
        WHERE p.user_id != $1
-       ORDER BY p.created_at ASC`,
+       ORDER BY e.exchanged_at ASC`,
       [req.user.userId]
     );
     res.json(result.rows);

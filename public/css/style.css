@@ -337,6 +337,208 @@ a {
 }
 
 /* =====================
+   EXCHANGE PAGES
+   ===================== */
+.exchange-container {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 20px 16px 60px;
+}
+
+.exchange-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: var(--shadow), 0 0 0 3px #FFB6C1;
+  padding: 24px 20px;
+}
+
+.exchange-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-weight: 900;
+}
+
+.exchange-hint {
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 18px;
+}
+
+/* QRコード */
+.qr-frame {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto 12px;
+}
+
+.qr-image {
+  width: 220px;
+  height: 220px;
+  border-radius: 16px;
+  border: 4px solid var(--pink);
+  box-shadow: 0 4px 16px rgba(255,105,180,0.25);
+  display: block;
+  margin: 0 auto;
+}
+
+.qr-deco {
+  position: absolute;
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+.qr-deco--tl { top: -4px;  left: calc(50% - 118px); color: var(--pink); }
+.qr-deco--tr { top: -4px;  right: calc(50% - 118px); color: var(--yellow); }
+.qr-deco--bl { bottom: -4px; left: calc(50% - 118px); color: var(--accent); }
+.qr-deco--br { bottom: -4px; right: calc(50% - 118px); color: var(--purple); }
+
+.exchange-name-tag {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--pink);
+  background: #FFF0F8;
+  border: 2px solid #FFB6D9;
+  border-radius: 20px;
+  padding: 4px 20px;
+  display: inline-block;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* スキャナー */
+.scanner-wrap {
+  margin-bottom: 12px;
+}
+
+.scanner-wrap.hidden {
+  display: none;
+}
+
+#qr-reader {
+  border-radius: 12px;
+  overflow: hidden;
+  width: 100% !important;
+  border: 3px solid var(--accent);
+  margin-bottom: 10px;
+}
+
+#qr-reader video {
+  border-radius: 10px;
+}
+
+.btn-outline {
+  background: white;
+  color: var(--pink);
+  border: 2.5px solid var(--pink);
+  border-radius: 50px;
+  padding: 10px 24px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* 交換確認画面 */
+.confirm-icon-area {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0 12px;
+}
+
+.confirm-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--pink);
+  box-shadow: 0 4px 16px rgba(255,105,180,0.3);
+}
+
+.confirm-icon-placeholder {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFD6E7, #B8E6F0);
+  border: 4px solid var(--pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+.confirm-nickname {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.confirm-warning {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--orange);
+  background: #FFF8F0;
+  border: 2px solid #FFD6A5;
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin: 14px 0 8px;
+}
+
+.confirm-sub {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-top: 8px;
+}
+
+.already-badge {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--pink);
+  background: #FFF0F8;
+  border: 2.5px solid #FFB6D9;
+  border-radius: 50px;
+  padding: 8px 20px;
+  margin: 12px 0;
+}
+
+.confirm-error-icon {
+  font-size: 3rem;
+  text-align: center;
+}
+
+.btn-cancel-link {
+  display: block;
+  text-align: center;
+  margin-top: 14px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-light);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.btn-exchange {
+  background: rgba(255,255,255,0.3);
+  border-color: rgba(255,255,255,0.8);
+  font-weight: 900;
+}
+
+/* =====================
    AUTH PAGES
    ===================== */
 .auth-container {

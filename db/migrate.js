@@ -53,6 +53,19 @@ async function migrate() {
       CREATE INDEX IF NOT EXISTS idx_canvas_owner ON canvas_positions(owner_id);
     `);
 
+    // exchanges
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS exchanges (
+        id           SERIAL PRIMARY KEY,
+        user_a       INTEGER      NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        user_b       INTEGER      NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        exchanged_at TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
+        UNIQUE(user_a, user_b)
+      );
+      CREATE INDEX IF NOT EXISTS idx_exchanges_user_a ON exchanges(user_a);
+      CREATE INDEX IF NOT EXISTS idx_exchanges_user_b ON exchanges(user_b);
+    `);
+
     // updated_at トリガー
     await client.query(`
       CREATE OR REPLACE FUNCTION update_updated_at()

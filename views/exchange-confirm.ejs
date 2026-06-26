@@ -1,0 +1,83 @@
+<%- include('partials/header', { title: 'プロフ交換の確認' }) %>
+
+<div class="site-header">
+  <a href="/canvas" class="logo-link"><h1 class="logo-text">プリバム</h1></a>
+  <div class="header-actions">
+    <a href="/exchange" class="btn-logout">QR交換へ</a>
+  </div>
+</div>
+
+<div class="exchange-container">
+  <div class="exchange-card">
+
+    <% if (error) { %>
+      <!-- エラー表示 -->
+      <div class="confirm-icon-area">
+        <div class="confirm-error-icon">😢</div>
+      </div>
+      <div class="error-box" style="margin: 16px 0;"><%= error %></div>
+      <a href="/exchange" class="btn btn-primary btn-block">QR交換ページへ戻る</a>
+
+    <% } else if (alreadyExchanged) { %>
+      <!-- 交換済み -->
+      <div class="confirm-icon-area">
+        <% if (target.icon_url) { %>
+          <img src="<%= target.icon_url %>" alt="アイコン" class="confirm-icon">
+        <% } else { %>
+          <div class="confirm-icon-placeholder"><span>🌟</span></div>
+        <% } %>
+      </div>
+      <div class="confirm-nickname"><%= target.nickname %></div>
+      <div class="already-badge">
+        <span>♡</span> もう交換済みだよ！ <span>♡</span>
+      </div>
+      <p class="confirm-sub">このお友達はもうキャンバスにいるよ★</p>
+      <a href="/canvas" class="btn btn-primary btn-block" style="margin-top:20px;">
+        キャンバスを見る
+      </a>
+
+    <% } else { %>
+      <!-- 交換確認 -->
+      <div class="exchange-card-title">
+        <span class="section-icon">♡</span>
+        <span class="rainbow-text" style="font-size:1.2rem;">プロフ交換！</span>
+        <span class="section-icon">♡</span>
+      </div>
+
+      <p class="exchange-hint" style="margin-bottom:20px;">このお友達とプロフ交換する？</p>
+
+      <div class="confirm-icon-area">
+        <% if (target.icon_url) { %>
+          <img src="<%= target.icon_url %>" alt="アイコン" class="confirm-icon">
+        <% } else { %>
+          <div class="confirm-icon-placeholder"><span>🌟</span></div>
+        <% } %>
+      </div>
+
+      <div class="confirm-nickname"><%= target.nickname %></div>
+
+      <% if (target.blood_type) { %>
+        <div style="text-align:center; margin: 4px 0;">
+          <span class="blood-badge"><%= target.blood_type %>型</span>
+        </div>
+      <% } %>
+
+      <p class="confirm-warning">
+        ★ 交換は一度きり！よく確認してね ★
+      </p>
+
+      <form action="/exchange/execute" method="POST">
+        <input type="hidden" name="target_id" value="<%= target.user_id %>">
+        <button type="submit" class="btn btn-primary btn-block btn-large" style="margin-top:8px;">
+          ♡ 交換する！ ♡
+        </button>
+      </form>
+
+      <a href="/exchange" class="btn-cancel-link">やっぱりやめる</a>
+
+    <% } %>
+
+  </div>
+</div>
+
+<%- include('partials/footer') %>

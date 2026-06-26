@@ -1,0 +1,112 @@
+<%- include('partials/header', { title: 'プロフ交換' }) %>
+
+<div class="site-header">
+  <a href="/canvas" class="logo-link"><h1 class="logo-text">プリバム</h1></a>
+  <div class="header-actions">
+    <a href="/canvas" class="btn-logout">キャンバスへ</a>
+  </div>
+</div>
+
+<div class="exchange-container">
+
+  <!-- QRコード表示 -->
+  <div class="exchange-card">
+    <div class="exchange-card-title">
+      <span class="section-icon">★</span>
+      <span class="rainbow-text" style="font-size:1.3rem;">MY QR CODE</span>
+      <span class="section-icon">★</span>
+    </div>
+    <p class="exchange-hint">相手にこのQRを読み取ってもらおう！</p>
+
+    <div class="qr-frame">
+      <div class="qr-deco qr-deco--tl">♡</div>
+      <div class="qr-deco qr-deco--tr">★</div>
+      <div class="qr-deco qr-deco--bl">☆</div>
+      <div class="qr-deco qr-deco--br">♡</div>
+      <img src="<%= qrDataUrl %>" alt="QRコード" class="qr-image">
+    </div>
+
+    <p class="exchange-name-tag"><%= user.username %></p>
+  </div>
+
+  <!-- スキャナー -->
+  <div class="exchange-card" style="margin-top: 16px;">
+    <div class="exchange-card-title">
+      <span class="section-icon">♡</span>
+      <span style="color: var(--accent); font-weight:900;">QRを読み取る</span>
+      <span class="section-icon">♡</span>
+    </div>
+    <p class="exchange-hint">相手のQRをカメラで読み取ろう！</p>
+
+    <div id="scannerWrap" class="scanner-wrap hidden">
+      <div id="qr-reader"></div>
+      <button class="btn btn-outline" id="stopBtn" onclick="stopScanner()">
+        スキャンをやめる
+      </button>
+    </div>
+
+    <div id="scannerError" class="error-box hidden" style="margin-top:12px;"></div>
+
+    <button class="btn btn-primary btn-block" id="startBtn" onclick="startScanner()">
+      カメラを起動してスキャン
+    </button>
+  </div>
+
+</div>
+
+<!-- html5-qrcode CDN -->
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script>
+let html5QrCode = null;
+
+function startScanner() {
+  document.getElementById('scannerWrap').classList.remove('hidden');
+  document.getElementById('startBtn').classList.add('hidden');
+  document.getElementById('scannerError').classList.add('hidden');
+
+  html5QrCode = new Html5Qrcode('qr-reader');
+  html5QrCode.start(
+    { facingMode: 'environment' },
+    { fps: 10, qrbox: { width: 240, height: 240 } },
+    onScanSuccess,
+    () => {} // エラーは無視
+  ).catch(err => {
+    const errEl = document.getElementById('scannerError');
+    errEl.textContent = 'カメラへのアクセスが許可されていないよ！ブラウザの設定を確認してね。';
+    errEl.classList.remove('hidden');
+    stopScanner();
+  });
+}
+
+function stopScanner() {
+  if (html5QrCode) {
+    html5QrCode.stop().catch(() => {});
+    html5QrCode = null;
+  }
+  document.getElementById('scannerWrap').classList.add('hidden');
+  document.getElementById('startBtn').classList.remove('hidden');
+}
+
+function onScanSuccess(decodedText) {
+  stopScanner();
+  try {
+    const url = new URL(decodedText);
+    if (url.pathname.startsWith('/exchange/scan/')) {
+      window.location.href = url.pathname;
+    } else {
+      showScanError('プリバムのQRコードじゃないみたい！');
+    }
+  } catch {
+    showScanError('QRコードを読み取れなかったよ…もう一度試してね！');
+  }
+}
+
+function showScanError(msg) {
+  const errEl = document.getElementById('scannerError');
+  errEl.textContent = msg;
+  errEl.classList.remove('hidden');
+  document.getElementById('startBtn').classList.remove('hidden');
+}
+</script>
+
+<%- include('partials/footer') %>
