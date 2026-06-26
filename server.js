@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const fs = require('fs');
 
+const migrate = require('./db/migrate');
 const authRoutes = require('./routes/auth');
 const profileRoutes = require('./routes/profile');
 const canvasRoutes = require('./routes/canvas');
@@ -37,6 +38,13 @@ app.get('/', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`\nプリバム起動中! http://localhost:${PORT}\n`);
-});
+migrate()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`\nプリバム起動中! http://localhost:${PORT}\n`);
+    });
+  })
+  .catch((err) => {
+    console.error('起動失敗 (DB接続を確認してください):', err.message);
+    process.exit(1);
+  });
