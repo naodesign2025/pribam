@@ -3,6 +3,242 @@
    Accent: #4DB8C8
    ================================================ */
 
+/* =====================
+   CANVAS PAGE
+   ===================== */
+.canvas-page {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.canvas-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, var(--pink) 0%, var(--accent) 100%);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.canvas-logo {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: white;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+  letter-spacing: 0.05em;
+}
+
+.canvas-topbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.topbar-btn {
+  background: rgba(255,255,255,0.25);
+  color: white;
+  border: 2px solid rgba(255,255,255,0.6);
+  border-radius: 20px;
+  padding: 5px 13px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.topbar-btn:hover {
+  background: rgba(255,255,255,0.4);
+}
+
+.canvas-hint {
+  background: #FFF8FC;
+  border-bottom: 2px dashed #FFB6C1;
+  text-align: center;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--pink);
+  flex-shrink: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* キャンバスビューポート（スクロール領域） */
+.canvas-viewport {
+  flex: 1;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+/* キャンバス本体（アイコンを絶対配置する親） */
+.canvas-bg {
+  position: relative;
+  width: 1400px;
+  min-height: 2000px;
+  background-color: #FFF8FC;
+  background-image:
+    radial-gradient(circle, #FFB6C1 1.5px, transparent 1.5px),
+    radial-gradient(circle, #B8E6F0 1.5px, transparent 1.5px);
+  background-size: 40px 40px, 40px 40px;
+  background-position: 0 0, 20px 20px;
+}
+
+/* 背景装飾文字 */
+.canvas-deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cd {
+  position: absolute;
+  font-size: 1.4rem;
+  opacity: 0.12;
+  color: var(--pink);
+}
+
+.cd1 { top: 5%;  left: 3%;  font-size: 2rem; color: var(--pink); }
+.cd2 { top: 8%;  left: 30%; font-size: 1.6rem; color: var(--accent); }
+.cd3 { top: 3%;  left: 60%; font-size: 1.8rem; color: var(--yellow); }
+.cd4 { top: 12%; left: 85%; font-size: 2.2rem; color: var(--pink); }
+.cd5 { top: 25%; left: 12%; font-size: 1.8rem; color: var(--purple); }
+.cd6 { top: 30%; left: 75%; font-size: 1.6rem; color: var(--accent); }
+.cd7 { top: 50%; left: 45%; font-size: 2rem;   color: var(--pink); }
+.cd8 { top: 65%; left: 20%; font-size: 1.6rem; color: var(--yellow); }
+
+/* キャンバスタイトル */
+.canvas-title-deco {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.canvas-title-deco .rainbow-text {
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  opacity: 0.35;
+}
+
+/* ──────────────────
+   アイコンステッカー
+   ────────────────── */
+.icon-sticker {
+  position: absolute;
+  width: 90px;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: filter 0.15s, transform 0.15s;
+  z-index: 1;
+  touch-action: none;
+}
+
+.icon-sticker:hover {
+  z-index: 5;
+  filter: drop-shadow(0 4px 12px rgba(255,105,180,0.5));
+}
+
+.icon-sticker.is-dragging {
+  cursor: grabbing;
+  z-index: 1000;
+  filter: drop-shadow(0 8px 20px rgba(255,105,180,0.6));
+  transform: rotate(0deg) scale(1.08) !important;
+}
+
+.sticker-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.sticker-photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow:
+    0 0 0 2.5px var(--pink),
+    0 4px 10px rgba(0,0,0,0.18);
+  display: block;
+  background: #FFD6EC;
+}
+
+.sticker-photo--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+}
+
+.sticker-name {
+  background: white;
+  border: 2px solid var(--pink);
+  border-radius: 10px;
+  padding: 2px 8px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: var(--text);
+  text-align: center;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(255,105,180,0.2);
+}
+
+/* 空状態 */
+.canvas-empty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.canvas-empty.hidden {
+  display: none;
+}
+
+.empty-heart {
+  font-size: 3.5rem;
+  color: var(--pink);
+  opacity: 0.5;
+  animation: heartbeat 1.6s ease-in-out infinite;
+  margin-bottom: 12px;
+}
+
+.empty-msg {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--pink);
+  opacity: 0.6;
+  margin-bottom: 6px;
+}
+
+.empty-sub {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-light);
+  opacity: 0.6;
+}
+
 :root {
   --accent:      #4DB8C8;
   --pink:        #FF69B4;

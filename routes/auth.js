@@ -37,7 +37,7 @@ router.post('/login', async (req, res) => {
       sameSite: 'lax',
     });
 
-    res.redirect('/profile');
+    res.redirect('/canvas');
   } catch (err) {
     console.error(err);
     res.render('login', { error: 'エラーが発生したよ。もう一度試してね！' });

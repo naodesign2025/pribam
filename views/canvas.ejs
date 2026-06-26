@@ -1,0 +1,55 @@
+<%- include('partials/header', { title: 'プリバム キャンバス' }) %>
+
+<div class="canvas-page">
+
+  <!-- トップバー -->
+  <div class="canvas-topbar">
+    <span class="canvas-logo">プリバム</span>
+    <div class="canvas-topbar-actions">
+      <a href="/profile" class="topbar-btn btn-myprof">マイプロフ</a>
+      <a href="/auth/logout" class="topbar-btn btn-logout-small">ログアウト</a>
+    </div>
+  </div>
+
+  <!-- ヒント -->
+  <div class="canvas-hint" id="canvasHint">
+    <span>★ アイコンを長押し&ドラッグして自由に配置しよう！タップでプロフ表示 ★</span>
+  </div>
+
+  <!-- キャンバスビューポート -->
+  <div class="canvas-viewport" id="canvasViewport">
+    <div class="canvas-bg" id="canvas">
+
+      <!-- 背景装飾 -->
+      <div class="canvas-deco" aria-hidden="true">
+        <span class="cd cd1">★</span>
+        <span class="cd cd2">♡</span>
+        <span class="cd cd3">☆</span>
+        <span class="cd cd4">★</span>
+        <span class="cd cd5">♡</span>
+        <span class="cd cd6">☆</span>
+        <span class="cd cd7">★</span>
+        <span class="cd cd8">♡</span>
+      </div>
+
+      <!-- タイトル装飾 -->
+      <div class="canvas-title-deco">
+        <span class="rainbow-text">MY PROFILE BOOK</span>
+      </div>
+
+      <!-- アイコンはJSで挿入 -->
+
+      <!-- 空状態 -->
+      <div class="canvas-empty hidden" id="canvasEmpty">
+        <div class="empty-heart">♡</div>
+        <p class="empty-msg">まだお友達のプロフがないよ！</p>
+        <p class="empty-sub">プロフ交換してキャンバスを埋めよう★</p>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script src="/js/canvas.js"></script>
+<%- include('partials/footer') %>

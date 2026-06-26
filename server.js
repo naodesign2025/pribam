@@ -6,6 +6,7 @@ const fs = require('fs');
 
 const authRoutes = require('./routes/auth');
 const profileRoutes = require('./routes/profile');
+const canvasRoutes = require('./routes/canvas');
 
 const app = express();
 
@@ -25,11 +26,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
+app.use('/canvas', canvasRoutes);
 
 app.get('/', (req, res) => {
   const token = req.cookies.token;
   if (token) {
-    return res.redirect('/profile');
+    return res.redirect('/canvas');
   }
   res.redirect('/auth/login');
 });
